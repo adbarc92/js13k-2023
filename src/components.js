@@ -1,4 +1,44 @@
-//
+import { draw } from "./draw.js";
+
+/* System */
+
+export class Player {
+  /** @type {Record<string, boolean>} */
+  keys = {};
+  score = 0;
+  gameOver = false;
+  gameStarted = false;
+  firstScreenUiVisible = false;
+
+  /** @param {string} key */
+  setKeyDown(key) {
+    this.keys[key] = true;
+  }
+  /** @param {string} key */
+  setKeyUp(key) {
+    this.keys[key] = false;
+  }
+}
+
+export class Ai {}
+
+export class StupidMongolians {
+  faction = 0;
+  waveNumber = 0;
+}
+
+export class Camera {
+  x = 0;
+  y = 0;
+  w = draw.SCREEN_WIDTH;
+  h = draw.SCREEN_HEIGHT;
+}
+
+export class Ui {}
+
+export class LimitedLifetime {}
+
+/* Physics */
 
 export class PhysicsBody {
   vx = 0;
@@ -21,7 +61,7 @@ export class Moving {}
 
 export class Projectile {}
 
-//
+/* Drawing */
 
 export class Renderable {}
 
@@ -29,27 +69,21 @@ export class HitHighlightRender {}
 
 export class StrikeHighlightRender {}
 
-//
+export class Speaker {}
 
-export class LimitedLifetime {}
+/* Stats */
 
-//
+export class HitPoints {
+  max = 2;
+  current = 1;
 
-export class Player {}
-
-export class Ai {}
-
-export class StupidMongolians {}
-
-//
-
-export class Camera {}
-
-export class Ui {}
-
-// Stats
-
-export class HitPoints {}
+  /**
+   * @param {number} hp
+   */
+  constructor(hp) {
+    this.current = this.max = hp;
+  }
+}
 
 export class HitBody {
   x1 = 0;
@@ -72,13 +106,16 @@ export class HitBody {
   }
 }
 
-// Actions
+/* Actions */
 
-export class Melee {}
+export class Melee {
+  damage = 1;
+  attacking = false;
+}
 
 export class Shooter {}
 
-export class Dash {}
+export class Dash {} // Includes afterimage animation
 
 export class Jump {}
 
@@ -88,3 +125,26 @@ export class TimeSlow {
   adrenaline = 0;
   active = false;
 }
+
+export const getComponents = () => [
+  Player,
+  Ai,
+  StupidMongolians,
+  Camera,
+  Ui,
+  LimitedLifetime,
+  PhysicsBody,
+  Moving,
+  Projectile,
+  Renderable,
+  HitHighlightRender,
+  StrikeHighlightRender,
+  HitPoints,
+  HitBody,
+  Melee,
+  Shooter,
+  Dash,
+  Jump,
+  Block,
+  TimeSlow,
+];
