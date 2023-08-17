@@ -1,19 +1,31 @@
+/**
+ * @typedef {object} ECS
+ * @property {(...args: any[]) => void} register
+ * @property {(...args: any[]) => void} process
+ * @property {() => object} create
+ * @property {(id: string) => any} get
+ * @property {(...args: any[]) => any} select
+ * @property {() => void} update
+ * @property {() => void} reset
+ */
 const selectors = [];
 const systems = [];
 const entities = {};
 
-let ecsComponentSign = '_sign';
-let ecsComponentMask = '_mask';
+let ecsComponentSign = "_sign";
+let ecsComponentMask = "_mask";
 
-if (typeof Symbol !== 'undefined') {
+if (typeof Symbol !== "undefined") {
+  //@ts-ignore
   ecsComponentSign = Symbol(ecsComponentSign);
+  //@ts-ignore
   ecsComponentMask = Symbol(ecsComponentMask);
 }
 
 const getComponentProperty = (ecsComponentProperty, Component) => {
   const property = Component[ecsComponentProperty];
   if (!property) {
-    throw new Error('The component is not registered');
+    throw new Error("The component is not registered");
   }
   return property;
 };
@@ -22,20 +34,20 @@ const getComponentSign = getComponentProperty.bind(null, ecsComponentSign);
 const getComponentMask = getComponentProperty.bind(null, ecsComponentMask);
 
 const matchEntity = (entity) => {
-  entity.id && selectors.forEach(selector => selector.match(entity));
+  entity.id && selectors.forEach((selector) => selector.match(entity));
 };
 
 const ejectEntity = (entity) => {
   const { components } = entity;
   // eslint-disable-next-line no-restricted-syntax
-  for (const key in components) {
-    if (Object.prototype.hasOwnProperty.call(components, key)) {
-      const component = components[key];
-      component && component.destructor && component.destructor();
-    }
-  }
+  // for (const key in components) {
+  //   if (Object.prototype.hasOwnProperty.call(components, key)) {
+  //     const component = components[key];
+  //     component && component.destructor && component.destructor();
+  //   }
+  // }
 
-  selectors.forEach(selector => selector.remove(entity));
+  selectors.forEach((selector) => selector.remove(entity));
   delete entities[entity.id];
   entity.id = 0;
   // entity.mask = 0;
@@ -45,7 +57,7 @@ const ejectEntity = (entity) => {
 let sequence = 1;
 const signs = {};
 
-class Entity: IEntity {
+class Entity {
   constructor(id) {
     this.id = id || (sequence++).toString(36);
     this.components = Object.assign({}, signs);
@@ -88,7 +100,6 @@ class Entity: IEntity {
   /*
   set(Component, ...args) {
     const component = this.components[getComponentSign(Component)];
-
     if (component) {
       if (!component.setter) {
         throw new Error('Component does not have setter');
@@ -115,9 +126,9 @@ class Node {
 
 class Selector {
   constructor(mask) {
-    if (!mask) {
-      throw new Error('Empty selector');
-    }
+    // if (!mask) {
+    //   throw new Error('Empty selector');
+    // }
 
     this.mask = mask;
     this.map = {};
@@ -186,17 +197,18 @@ let bit = 0;
 const perf = performance || Date;
 const now = perf.now.bind(perf);
 
-export default {
+export const ecs = {
   register(...Components) {
     Components.forEach((Component) => {
-      if (bit > 31) {
-        throw new Error('Components limit reached');
-      }
+      // if (bit > 31) {
+      //   throw new Error('Components limit reached');
+      //   return;
+      // }
 
-      if (Component[ecsComponentSign]) {
-        // throw new Error('The component is already registered');
-        return;
-      }
+      // if (Component[ecsComponentSign]) {
+      //   throw new Error('The component is already registered');
+      //   return;
+      // }
 
       const sign = bit.toString(36);
       signs[sign] = null;
@@ -208,14 +220,15 @@ export default {
   },
 
   process(...s) {
-    s.forEach(system => systems.push(system));
+    s.forEach((system) => systems.push(system));
   },
 
   create(id) {
     const entity = new Entity(id);
 
     if (entities[entity.id]) {
-      throw new Error('The ID already exist');
+      // throw new Error('The ID already exist');
+      return;
     }
 
     entities[entity.id] = entity;
@@ -254,5 +267,11 @@ export default {
     });
 
     return statistics;
+  },
+
+  reset() {
+    for (const i in entities) {
+      entities[i].eject();
+    }
   },
 };
