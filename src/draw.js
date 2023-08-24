@@ -75,6 +75,10 @@ class Draw {
     canvas = c;
     this.handleResize();
     document.getElementById("canvasDiv")?.appendChild(canvas);
+    await this.loadAssets();
+  }
+
+  async loadAssets() {
     const img = await loadImage("sprites", "res/sprites.png");
     const imgSize = img.width;
     const spriteSize = 16;
@@ -97,6 +101,7 @@ class Draw {
       }
     }
   }
+
   /** */
   handleResize() {
     if (canvas) {

@@ -1,5 +1,7 @@
 import { draw } from "./draw.js";
 
+// FIXME: need a mechanism for governing game speed
+
 /* System */
 
 export class Player {
@@ -22,7 +24,7 @@ export class Player {
 
 export class Ai {}
 
-export class StupidMongolians {
+export class MongolianHoard {
   faction = 0;
   waveNumber = 0;
 }
@@ -129,7 +131,7 @@ export class TimeSlow {
 export const getComponents = () => [
   Player,
   Ai,
-  StupidMongolians,
+  MongolianHoard,
   Camera,
   Ui,
   LimitedLifetime,
