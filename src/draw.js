@@ -14,7 +14,7 @@
 /** @type {HTMLCanvasElement | null} */
 let canvas;
 const images = {};
-const sprites = {};
+export const sprites = {};
 
 /**
  * @param {string} spriteName
@@ -79,6 +79,7 @@ class Draw {
   }
 
   async loadAssets() {
+    console.log("loading assets");
     const img = await loadImage("sprites", "res/sprites.png");
     const imgSize = img.width;
     const spriteSize = 16;
@@ -100,6 +101,7 @@ class Draw {
         ctr++;
       }
     }
+    console.log("loaded assets");
   }
 
   /** */
