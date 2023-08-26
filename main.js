@@ -1,10 +1,10 @@
-import { getComponents } from "./src/components";
-import { EXPECTED_FS } from "./src/constants";
-import { Debug } from "./src/debug";
-import { draw } from "./src/draw";
-import { ecs } from "./src/ecs.js";
-import { startNewGame } from "./src/entities";
-import { Input, getSystems } from "./src/systems";
+import { getComponents } from './src/components';
+import { EXPECTED_FS } from './src/constants';
+import { Debug } from './src/debug';
+import { draw } from './src/draw';
+import { ecs } from './src/ecs.js';
+import { startNewGame } from './src/entities';
+import { Input, getSystems } from './src/systems';
 
 /**
  * @param {number} frameTime
@@ -38,24 +38,21 @@ const executeCoreGameLoop = () => {
 };
 
 export const start = () => {
-  console.log("app starting");
+  console.log('app starting');
 
   ecs.register(...getComponents());
   ecs.process(...getSystems(ecs));
-
-  // const debug = new Debug();
-  // debug.listSprites();
 
   startNewGame(ecs);
   executeCoreGameLoop();
 };
 
-window.addEventListener("load", async () => {
+window.addEventListener('load', async () => {
   await draw.init();
-  window.addEventListener("resize", () => {
+  window.addEventListener('resize', () => {
     draw.handleResize();
   });
   window.draw = draw;
-  console.log("app loaded");
+  console.log('app loaded');
   start();
 });
