@@ -10,7 +10,7 @@ export function createPlayer(ecs) {
     Math.floor(CANVAS_WIDTH / 2),
     Math.floor(CANVAS_HEIGHT / 2)
   );
-  const renderable = new Renderable("spr_0");
+  const renderable = new Renderable({ baseSpriteName: "spr" });
 
   const entity = ecs.create();
   entity.add(player, physics, renderable);
