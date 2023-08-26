@@ -3,6 +3,7 @@ import { EXPECTED_FS } from "./src/constants";
 import { Debug } from "./src/debug";
 import { draw } from "./src/draw";
 import { ecs } from "./src/ecs.js";
+import { startNewGame } from "./src/entities";
 import { Input, getSystems } from "./src/systems";
 
 /**
@@ -44,6 +45,8 @@ export const start = () => {
 
   // const debug = new Debug();
   // debug.listSprites();
+
+  startNewGame(ecs);
   executeCoreGameLoop();
 };
 

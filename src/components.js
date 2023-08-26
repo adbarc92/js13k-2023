@@ -43,12 +43,12 @@ export class LimitedLifetime {}
 /* Physics */
 
 export class PhysicsBody {
-  vx = 0;
-  vy = 0;
-  ax = 0;
-  ay = 0;
-  mass = 1;
-  acc = false;
+  // vx = 0;
+  // vy = 0;
+  // ax = 0;
+  // ay = 0;
+  // mass = 1;
+  // acc = false;
 
   /**
    * @param {number} x
@@ -59,13 +59,21 @@ export class PhysicsBody {
     this.y = y;
   }
 }
+
 export class Moving {}
 
 export class Projectile {}
 
 /* Drawing */
 
-export class Renderable {}
+export class Renderable {
+  constructor(spriteName, opacity, z, scale) {
+    this.spriteName = spriteName;
+    this.opacity = opacity || 1;
+    this.z = z || 0;
+    this.scale = scale || 1;
+  }
+}
 
 export class HitHighlightRender {}
 

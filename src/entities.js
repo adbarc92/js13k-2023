@@ -1,9 +1,27 @@
-import { PhysicsBody } from "./components";
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants";
+import { PhysicsBody, Player, Renderable } from "./components";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, playerEntityId } from "./constants";
 
 /**
  * @param {import('./ecs.js').ECS} ecs
  */
 export function createPlayer(ecs) {
-  const physics = new PhysicsBody(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+  const player = new Player();
+  const physics = new PhysicsBody(
+    Math.floor(CANVAS_WIDTH / 2),
+    Math.floor(CANVAS_HEIGHT / 2)
+  );
+  console.log(`Physics ${JSON.stringify(physics)}`);
+  const renderable = new Renderable("spr_0");
+
+  const entity = ecs.create();
+  entity.add(player, renderable);
+  // playerEntityId = entity.id;
 }
+
+/**
+ * @param {import('./ecs.js').ECS} ecs
+ */
+export const startNewGame = (ecs) => {
+  ecs.reset();
+  createPlayer(ecs);
+};

@@ -11,54 +11,6 @@ let keysUp = [];
 /** @type {KeyboardEvent[]} */
 let keysHeld = [];
 
-// window.addEventListener("keydown", (ev) => {
-//   console.log("Registering keydown listeners");
-//   if (ev.repeat) {
-//     keysHeld.push(ev);
-//   } else {
-//     keysDown.push(ev);
-//   }
-// });
-
-// window.addEventListener("keyup", (ev) => {
-//   console.log("Registering keydown listeners");
-//   keysUp.push(ev);
-// });
-
-// const handleKeyUpdate = (player, physics) => {
-//   // if (hp.hp <= 0 || getBaseEntity(ecs).get(HitPoints).hp <= 0) {
-//   //   return;
-//   // }
-
-//   let accelerating = false;
-//   let acceleratingReverse = false;
-//   const keys = player.keys;
-
-//   if (keys.ArrowLeft || keys.a) {
-//     // Move Left: change animation, set -X velocity, set +X acc
-//     console.log("Move left");
-//     physics.vx = -MOVEMENT_SPEED;
-//   }
-//   if (keys.ArrowRight || keys.d) {
-//     // Move Right: change animation, set +X velocity, set -X acc
-//     console.log("Move right");
-//     physics.vx = MOVEMENT_SPEED;
-//   }
-//   if (keys.ArrowUp || keys.w) {
-//     console.log("Jump");
-//     // Jump || Double Jump:
-//   }
-//   if (keys.Space) {
-//     console.log("Strike");
-//     // Attack
-//   }
-//   if (keys.Shift) {
-//     console.log("Block");
-
-//     // Deflect || Block
-//   }
-// };
-
 /** @param {import('./ecs.js').ECS} ecs */
 export class Input {
   constructor(ecs) {
@@ -89,10 +41,6 @@ export class Input {
    * @param {HitPoints} hp
    */
   handleKeyUpdate = (player, physics) => {
-    // if (hp.hp <= 0 || getBaseEntity(ecs).get(HitPoints).hp <= 0) {
-    //   return;
-    // }
-
     const keys = player.keys;
 
     if (keys.ArrowLeft || keys.a) {
@@ -141,12 +89,31 @@ export class Input {
 /* Render */
 
 /** @param {import('./ecs.js').ECS} ecs */
-export function RenderActors(ecs) {
-  const sprites = ecs.select(PhysicsBody, Renderable);
+export class Render {
+  constructor(ecs) {
+    console.log("Initializing render");
+    this.selector = ecs.select(PhysicsBody, Renderable);
+  }
+
+  drawSprite(entity) {
+    /** @type {PhysicsBody} */
+    const { x, y } = entity.get(PhysicsBody);
+    /** @type {Renderable} */
+    const { spriteName, opacity, scale, z } = entity.get(Renderable);
+
+    draw.setOpacity(opacity);
+    draw.drawSprite(spriteName, x, y);
+  }
+
+  update(delta) {
+    this.selector.iterate((entity) => {
+      this.drawSprite(entity);
+    });
+  }
 }
 
 /**
  * @param {import('./ecs.js').ECS} ecs
  * @returns {object[]}
  */
-export const getSystems = (ecs) => [new Input(ecs)];
+export const getSystems = (ecs) => [new Input(ecs), new Render(ecs)];

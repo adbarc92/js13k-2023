@@ -18,3 +18,5 @@ export const CANVAS_WIDTH = 683 * 1.5;
 
 /* Sprites */
 export const SPRITE_SIZE = 16;
+
+export let playerEntityId = "";
