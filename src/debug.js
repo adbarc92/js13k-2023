@@ -1,4 +1,5 @@
 import { sprites } from "./draw";
+import { Input } from "./systems";
 
 /**
  * @class

@@ -87,6 +87,7 @@ export class HitPoints {
   }
 }
 
+// FIXME: change to be more fine-grained
 export class HitBody {
   x1 = 0;
   y1 = 0;
