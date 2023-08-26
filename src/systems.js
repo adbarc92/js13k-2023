@@ -1,6 +1,7 @@
 import { Player, PhysicsBody, HitPoints, Renderable } from "./components";
 
 import { MOVEMENT_SPEED } from "./constants";
+import { draw } from "./draw";
 
 /* Input */
 
@@ -91,16 +92,18 @@ export class Render {
     /** @type {PhysicsBody} */
     const { x, y } = entity.get(PhysicsBody);
     /** @type {Renderable} */
-    const { spriteName, opacity, scale, z } = entity.get(Renderable);
+    const renderable = entity.get(Renderable);
+    const spriteName = this.constructSpriteName(renderable);
 
-    draw.setOpacity(opacity);
     draw.drawSprite(spriteName, x, y);
   }
 
-  constructSpriteName(entity) {
+  constructSpriteName(renderable) {
     /** @type {Renderable} */
-    const { baseSpriteName, animationState, facingLeft, opacity, z, scale } =
-      entity.get(Renderable);
+    const { baseSpriteName, animationState, facingRight, opacity, z, scale } =
+      renderable;
+
+    return `${baseSpriteName}_${animationState[0]}${facingRight ? "" : "_f"}`; // FIXME: animation state should be dynamic
   }
 
   update(delta) {

@@ -75,7 +75,7 @@ export class Renderable {
    * @param {object} [args]
    * @param {string} [args.baseSpriteName]
    * @param {Array<number>} [args.animationState]
-   * @param {boolean} [args.facingLeft]
+   * @param {boolean} [args.facingRight]
    * @param {number} [args.opacity]
    * @param {number} [args.z]
    * @param {number} [args.scale]
@@ -83,14 +83,14 @@ export class Renderable {
   constructor({
     baseSpriteName,
     animationState,
-    facingLeft,
+    facingRight,
     opacity,
     z,
     scale,
   }) {
     this.baseSpriteName = baseSpriteName;
     this.animationState = animationState || ANIMATION_STATE.NEUTRAL;
-    this.facingLeft = facingLeft;
+    this.facingRight = facingRight;
     this.opacity = opacity || 1;
     this.z = z || 0;
     this.scale = scale || 1;
