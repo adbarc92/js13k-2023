@@ -16,7 +16,7 @@ import { CANVAS_HEIGHT, CANVAS_WIDTH, SPRITE_SIZE } from "./constants";
 /** @type {HTMLCanvasElement | null} */
 let canvas;
 const images = {};
-export const sprites = {};
+const sprites = {};
 
 /**
  * @param {string} spriteName

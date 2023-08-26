@@ -19,18 +19,15 @@ export class Input {
   }
 
   registerEventListeners = () => {
-    console.log("Registering input event listeners"); // FIXME: Remove after debugging
     window.addEventListener("keydown", (ev) => {
       if (ev.repeat) {
         keysHeld.push(ev);
       } else {
-        console.log(`Keydown: ${ev.key}`); // FIXME: Remove after debugging
         keysDown.push(ev);
       }
     });
 
     window.addEventListener("keyup", (ev) => {
-      console.log(`Keyup: ${ev.key}`); // FIXME: Remove after debugging
       keysUp.push(ev);
     });
   };
@@ -57,7 +54,7 @@ export class Input {
       console.log("Jump");
       // Jump || Double Jump:
     }
-    if (keys.Space) {
+    if (keys[" "]) {
       console.log("Strike");
       // Attack
     }
@@ -92,7 +89,6 @@ export class Input {
 /** @param {import('./ecs.js').ECS} ecs */
 export class Render {
   constructor(ecs) {
-    console.log("Initializing render");
     this.selector = ecs.select(PhysicsBody, Renderable);
   }
 
