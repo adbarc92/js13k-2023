@@ -1,5 +1,7 @@
 import { draw } from "./draw.js";
 
+// FIXME: need a mechanism for governing game speed
+
 /* System */
 
 export class Player {
@@ -18,11 +20,15 @@ export class Player {
   setKeyUp(key) {
     this.keys[key] = false;
   }
+  /** @param {string} key */
+  setKeyHeld(key) {
+    // this.keys[key] = true;
+  }
 }
 
 export class Ai {}
 
-export class StupidMongolians {
+export class MongolianHoard {
   faction = 0;
   waveNumber = 0;
 }
@@ -41,12 +47,12 @@ export class LimitedLifetime {}
 /* Physics */
 
 export class PhysicsBody {
-  vx = 0;
-  vy = 0;
-  ax = 0;
-  ay = 0;
-  mass = 1;
-  acc = false;
+  // vx = 0;
+  // vy = 0;
+  // ax = 0;
+  // ay = 0;
+  // mass = 1;
+  // acc = false;
 
   /**
    * @param {number} x
@@ -57,13 +63,21 @@ export class PhysicsBody {
     this.y = y;
   }
 }
+
 export class Moving {}
 
 export class Projectile {}
 
 /* Drawing */
 
-export class Renderable {}
+export class Renderable {
+  constructor(spriteName, opacity, z, scale) {
+    this.spriteName = spriteName;
+    this.opacity = opacity || 1;
+    this.z = z || 0;
+    this.scale = scale || 1;
+  }
+}
 
 export class HitHighlightRender {}
 
@@ -85,6 +99,7 @@ export class HitPoints {
   }
 }
 
+// FIXME: change to be more fine-grained
 export class HitBody {
   x1 = 0;
   y1 = 0;
@@ -129,7 +144,7 @@ export class TimeSlow {
 export const getComponents = () => [
   Player,
   Ai,
-  StupidMongolians,
+  MongolianHoard,
   Camera,
   Ui,
   LimitedLifetime,

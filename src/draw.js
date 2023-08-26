@@ -1,5 +1,7 @@
 // @ts-check
 
+import { CANVAS_HEIGHT, CANVAS_WIDTH, SPRITE_SIZE } from "./constants";
+
 /**
  * @typedef {object} DrawTextParams
  * @property {string} [font]
@@ -64,8 +66,6 @@ class Draw {
   height = 0;
   fm = 1; // frame multiplier, updated every frame
   colors = colors;
-  SCREEN_HEIGHT = 512 * 1.5;
-  SCREEN_WIDTH = 683 * 1.5;
 
   enabled = true;
 
@@ -75,18 +75,23 @@ class Draw {
     canvas = c;
     this.handleResize();
     document.getElementById("canvasDiv")?.appendChild(canvas);
+    await this.loadAssets();
+  }
+
+  async loadAssets() {
+    console.log("loading assets");
     const img = await loadImage("sprites", "res/sprites.png");
     const imgSize = img.width;
-    const spriteSize = 16;
+
     let ctr = 0;
-    for (let i = 0; i < imgSize / spriteSize; i++) {
-      for (let j = 0; j < imgSize / spriteSize; j++) {
+    for (let i = 0; i < imgSize / SPRITE_SIZE; i++) {
+      for (let j = 0; j < imgSize / SPRITE_SIZE; j++) {
         const sprite = this.createSprite(
           img,
-          j * spriteSize,
-          i * spriteSize,
-          spriteSize,
-          spriteSize
+          j * SPRITE_SIZE,
+          i * SPRITE_SIZE,
+          SPRITE_SIZE,
+          SPRITE_SIZE
         );
         sprites["spr_" + ctr] = sprite;
         const fSprite = (sprites["spr_" + ctr + "_f"] =
@@ -96,12 +101,14 @@ class Draw {
         ctr++;
       }
     }
+    console.log("loaded assets");
   }
+
   /** */
   handleResize() {
     if (canvas) {
-      canvas.width = this.width = this.SCREEN_WIDTH;
-      canvas.height = this.height = this.SCREEN_HEIGHT;
+      canvas.width = this.width = CANVAS_WIDTH;
+      canvas.height = this.height = CANVAS_HEIGHT;
       this.getCtx().imageSmoothingEnabled = false;
     }
   }

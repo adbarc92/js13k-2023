@@ -1,24 +1,58 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+import { getComponents } from './src/components';
+import { EXPECTED_FS } from './src/constants';
+import { Debug } from './src/debug';
+import { draw } from './src/draw';
+import { ecs } from './src/ecs.js';
+import { startNewGame } from './src/entities';
+import { Input, getSystems } from './src/systems';
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+/**
+ * @param {number} frameTime
+ */
+const integrate = (frameTime) => {
+  draw.clear();
+  ecs.update(frameTime / 1000);
+};
 
-setupCounter(document.querySelector('#counter'))
+const executeCoreGameLoop = () => {
+  const startTime = performance.now();
+  let prevNow = startTime;
+
+  const _loop = () => {
+    const now = performance.now();
+    let frameTime = now - prevNow;
+    let prevFrameTime = Math.floor(frameTime);
+    prevNow = now;
+
+    if (frameTime > 4) {
+      frameTime = 4;
+    }
+    const deltaTime = frameTime;
+    frameTime -= deltaTime;
+    const fm = deltaTime / EXPECTED_FS;
+    draw.fm = fm;
+    draw.enabled = frameTime <= 0;
+    integrate(deltaTime);
+  };
+  setInterval(_loop, 16);
+};
+
+export const start = () => {
+  console.log('app starting');
+
+  ecs.register(...getComponents());
+  ecs.process(...getSystems(ecs));
+
+  startNewGame(ecs);
+  executeCoreGameLoop();
+};
+
+window.addEventListener('load', async () => {
+  await draw.init();
+  window.addEventListener('resize', () => {
+    draw.handleResize();
+  });
+  window.draw = draw;
+  console.log('app loaded');
+  start();
+});
