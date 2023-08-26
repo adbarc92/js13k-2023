@@ -1,11 +1,6 @@
-import {
-  Player,
-  PhysicsBody,
-  HitPoints,
-  Renderable,
-} from './components';
+import { Player, PhysicsBody, HitPoints, Renderable } from "./components";
 
-import { MOVEMENT_SPEED } from './constants';
+import { MOVEMENT_SPEED } from "./constants";
 
 /* Input */
 
@@ -24,8 +19,8 @@ export class Input {
   }
 
   registerEventListeners = () => {
-    console.log('Registering input event listeners'); // FIXME: Remove after debugging
-    window.addEventListener('keydown', (ev) => {
+    console.log("Registering input event listeners"); // FIXME: Remove after debugging
+    window.addEventListener("keydown", (ev) => {
       if (ev.repeat) {
         keysHeld.push(ev);
       } else {
@@ -34,7 +29,7 @@ export class Input {
       }
     });
 
-    window.addEventListener('keyup', (ev) => {
+    window.addEventListener("keyup", (ev) => {
       console.log(`Keyup: ${ev.key}`); // FIXME: Remove after debugging
       keysUp.push(ev);
     });
@@ -50,24 +45,24 @@ export class Input {
 
     if (keys.ArrowLeft || keys.a) {
       // Move Left: change animation, set -X velocity, set +X acc
-      console.log('Move left');
+      console.log("Move left");
       physics.x -= MOVEMENT_SPEED;
     }
     if (keys.ArrowRight || keys.d) {
       // Move Right: change animation, set +X velocity, set -X acc
-      console.log('Move right');
+      console.log("Move right");
       physics.x += MOVEMENT_SPEED;
     }
     if (keys.ArrowUp || keys.w) {
-      console.log('Jump');
+      console.log("Jump");
       // Jump || Double Jump:
     }
     if (keys.Space) {
-      console.log('Strike');
+      console.log("Strike");
       // Attack
     }
     if (keys.Shift) {
-      console.log('Block');
+      console.log("Block");
       // Deflect || Block
     }
   };
@@ -78,6 +73,8 @@ export class Input {
       const physics = entity.get(PhysicsBody);
       /** @type {Player} */
       const player = entity.get(Player);
+      keysDown.forEach((ev) => player.setKeyDown(ev.key));
+      keysUp.forEach((ev) => player.setKeyUp(ev.key));
       this.handleKeyUpdate(player, physics);
 
       if (keysUp.length) {
@@ -95,7 +92,7 @@ export class Input {
 /** @param {import('./ecs.js').ECS} ecs */
 export class Render {
   constructor(ecs) {
-    console.log('Initializing render');
+    console.log("Initializing render");
     this.selector = ecs.select(PhysicsBody, Renderable);
   }
 

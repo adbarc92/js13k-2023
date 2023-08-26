@@ -20,6 +20,10 @@ export class Player {
   setKeyUp(key) {
     this.keys[key] = false;
   }
+  /** @param {string} key */
+  setKeyHeld(key) {
+    // this.keys[key] = true;
+  }
 }
 
 export class Ai {}
