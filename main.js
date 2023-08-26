@@ -1,10 +1,9 @@
-import { getComponents } from './src/components';
-import { EXPECTED_FS } from './src/constants';
-import { Debug } from './src/debug';
-import { draw } from './src/draw';
-import { ecs } from './src/ecs.js';
-import { startNewGame } from './src/entities';
-import { Input, getSystems } from './src/systems';
+import { getComponents } from "./src/components";
+import { EXPECTED_FS } from "./src/constants";
+import { draw } from "./src/draw";
+import { ecs } from "./src/ecs.js";
+import { startNewGame } from "./src/entities";
+import { Input, getSystems } from "./src/systems";
 
 /**
  * @param {number} frameTime
@@ -21,7 +20,7 @@ const executeCoreGameLoop = () => {
   const _loop = () => {
     const now = performance.now();
     let frameTime = now - prevNow;
-    let prevFrameTime = Math.floor(frameTime);
+    // let prevFrameTime = Math.floor(frameTime);
     prevNow = now;
 
     if (frameTime > 4) {
@@ -38,7 +37,7 @@ const executeCoreGameLoop = () => {
 };
 
 export const start = () => {
-  console.log('app starting');
+  console.log("app starting");
 
   ecs.register(...getComponents());
   ecs.process(...getSystems(ecs));
@@ -47,12 +46,12 @@ export const start = () => {
   executeCoreGameLoop();
 };
 
-window.addEventListener('load', async () => {
+window.addEventListener("load", async () => {
   await draw.init();
-  window.addEventListener('resize', () => {
+  window.addEventListener("resize", () => {
     draw.handleResize();
   });
   window.draw = draw;
-  console.log('app loaded');
+  console.log("app loaded");
   start();
 });

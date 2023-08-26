@@ -18,6 +18,19 @@ let canvas;
 const images = {};
 const sprites = {};
 
+export const ANIMATION_STATE = {
+  NEUTRAL: [0],
+  WALKING: [1, 2],
+  DASHING: [3, 4],
+  DEFLECTING: [5, 6, 7],
+  SLASHING_1: [8, 9, 10, 11],
+  SLASHING_2: [12, 13, 14],
+  JUMPING: [15],
+  DOUBLE_JUMPING: [16],
+  LANDING: [17, 18],
+  DEAD: [19],
+};
+
 /**
  * @param {string} spriteName
  * @returns {Sprite}

@@ -41,26 +41,21 @@ export class Input {
     const keys = player.keys;
 
     if (keys.ArrowLeft || keys.a) {
-      // Move Left: change animation, set -X velocity, set +X acc
       console.log("Move left");
       physics.x -= MOVEMENT_SPEED;
     }
     if (keys.ArrowRight || keys.d) {
-      // Move Right: change animation, set +X velocity, set -X acc
       console.log("Move right");
       physics.x += MOVEMENT_SPEED;
     }
     if (keys.ArrowUp || keys.w) {
       console.log("Jump");
-      // Jump || Double Jump:
     }
     if (keys[" "]) {
       console.log("Strike");
-      // Attack
     }
     if (keys.Shift) {
       console.log("Block");
-      // Deflect || Block
     }
   };
 
@@ -100,6 +95,12 @@ export class Render {
 
     draw.setOpacity(opacity);
     draw.drawSprite(spriteName, x, y);
+  }
+
+  constructSpriteName(entity) {
+    /** @type {Renderable} */
+    const { baseSpriteName, animationState, facingLeft, opacity, z, scale } =
+      entity.get(Renderable);
   }
 
   update(delta) {

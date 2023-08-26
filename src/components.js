@@ -1,11 +1,11 @@
-import { draw } from "./draw.js";
+import { ANIMATION_STATE, draw } from "./draw.js";
 
 // FIXME: need a mechanism for governing game speed
 
 /* System */
 
 export class Player {
-  /** @type {Record<string, boolean>} */
+  /** @type {Record<string, Record<string, boolean>>} */
   keys = {};
   score = 0;
   gameOver = false;
@@ -71,8 +71,26 @@ export class Projectile {}
 /* Drawing */
 
 export class Renderable {
-  constructor(spriteName, opacity, z, scale) {
-    this.spriteName = spriteName;
+  /**
+   * @param {object} [args]
+   * @param {string} [args.baseSpriteName]
+   * @param {Array<number>} [args.animationState]
+   * @param {boolean} [args.facingLeft]
+   * @param {number} [args.opacity]
+   * @param {number} [args.z]
+   * @param {number} [args.scale]
+   */
+  constructor({
+    baseSpriteName,
+    animationState,
+    facingLeft,
+    opacity,
+    z,
+    scale,
+  }) {
+    this.baseSpriteName = baseSpriteName;
+    this.animationState = animationState || ANIMATION_STATE.NEUTRAL;
+    this.facingLeft = facingLeft;
     this.opacity = opacity || 1;
     this.z = z || 0;
     this.scale = scale || 1;
@@ -99,7 +117,6 @@ export class HitPoints {
   }
 }
 
-// FIXME: change to be more fine-grained
 export class HitBody {
   x1 = 0;
   y1 = 0;
